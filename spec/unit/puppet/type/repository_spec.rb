@@ -20,15 +20,15 @@ describe Puppet::Type.type(:repository) do
 
   context "ensure" do
     it "should default to present" do
-      resource[:ensure].should == :present
+      resource[:ensure].should eq(:present)
     end
 
     it "should accept a value of present or absent" do
       resource[:ensure] = :present
-      resource[:ensure].should == :present
+      resource[:ensure].should eq(:present)
 
       resource[:ensure] = :absent
-      resource[:ensure].should == :absent
+      resource[:ensure].should eq(:absent)
     end
   end
 
@@ -55,7 +55,7 @@ describe Puppet::Type.type(:repository) do
   context "source" do
     it "should accept any value" do
       resource[:source] = 'boxen/test'
-      resource[:source].should == 'boxen/test'
+      resource[:source].should eq('boxen/test')
     end
 
     it "should fail when not provided with a value" do
@@ -68,7 +68,7 @@ describe Puppet::Type.type(:repository) do
   context "protocol" do
     it "should accept any string value" do
       resource[:protocol] = 'git'
-      resource[:protocol].should == 'git'
+      resource[:protocol].should eq('git')
     end
 
     it "should default to the provider's default_protocol class method" do
@@ -78,30 +78,30 @@ describe Puppet::Type.type(:repository) do
   context "user" do
     it "should accept any string value" do
       resource[:user] = 'git'
-      resource[:user].should == 'git'
+      resource[:user].should eq('git')
     end
 
     it "should default to boxen_user if it exists" do
       Facter.stubs(:value).with(:boxen_user).returns(nil)
       Facter.stubs(:value).with(:id).returns(nil)
-      factory.call(default_opts)[:user].should == "root"
+      factory.call(default_opts)[:user].should eq("root")
 
       Facter.stubs(:value).with(:boxen_user).returns('testuser')
-      factory.call(default_opts)[:user].should == 'testuser'
+      factory.call(default_opts)[:user].should eq('testuser')
     end
 
     it "should override boxen_user if both exist" do
       Facter.stubs(:value).with(:boxen_user).returns('testuser')
 
       opts = default_opts.merge(:user => "otheruser")
-      factory.call(opts)[:user].should == 'otheruser'
+      factory.call(opts)[:user].should eq('otheruser')
     end
   end
 
   context "extra" do
     it "should accept an array of extra options" do
       resource[:extra] = ['foo', 'bar']
-      resource[:extra].should == ['foo', 'bar']
+      resource[:extra].should eq(['foo', 'bar'])
     end
   end
 end
