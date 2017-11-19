@@ -1,5 +1,7 @@
 # Repository Type and Provider for Boxen
 
+[![Build Status](https://travis-ci.org/boxen/puppet-repository.svg)](https://travis-ci.org/boxen/puppet-repository)
+
 Requires the following boxen modules:
 
 Supports:

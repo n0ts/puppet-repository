@@ -1,7 +1,4 @@
-require 'puppet'
-require 'rspec/mocks'
-require 'mocha/api'
+require 'rspec-puppet'
 
 RSpec.configure do |c|
-  c.mock_with :mocha
 end

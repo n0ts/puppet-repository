@@ -4,7 +4,7 @@ describe Puppet::Type.type(:repository) do
   let(:default_opts) do
     {
       :source => 'boxen/boxen',
-      :path => '/tmp/boxen',
+      :path   => '/tmp/boxen',
     }
   end
 
@@ -20,15 +20,15 @@ describe Puppet::Type.type(:repository) do
 
   context "ensure" do
     it "should default to present" do
-      resource[:ensure].should eq(:present)
+      expect(resource[:ensure]).to eq(:present)
     end
 
     it "should accept a value of present or absent" do
       resource[:ensure] = :present
-      resource[:ensure].should eq(:present)
+      expect(resource[:ensure]).to eq(:present)
 
       resource[:ensure] = :absent
-      resource[:ensure].should eq(:absent)
+      expect(resource[:ensure]).to eq(:absent)
     end
   end
 
@@ -55,7 +55,7 @@ describe Puppet::Type.type(:repository) do
   context "source" do
     it "should accept any value" do
       resource[:source] = 'boxen/test'
-      resource[:source].should eq('boxen/test')
+      expect(resource[:source]).to eq('boxen/test')
     end
 
     it "should fail when not provided with a value" do
@@ -68,7 +68,7 @@ describe Puppet::Type.type(:repository) do
   context "protocol" do
     it "should accept any string value" do
       resource[:protocol] = 'git'
-      resource[:protocol].should eq('git')
+      expect(resource[:protocol]).to eq('git')
     end
 
     it "should default to the provider's default_protocol class method" do
@@ -78,30 +78,31 @@ describe Puppet::Type.type(:repository) do
   context "user" do
     it "should accept any string value" do
       resource[:user] = 'git'
-      resource[:user].should eq('git')
+      expect(resource[:user]).to eq('git')
     end
 
     it "should default to boxen_user if it exists" do
-      Facter.stubs(:value).with(:boxen_user).returns(nil)
-      Facter.stubs(:value).with(:id).returns(nil)
-      factory.call(default_opts)[:user].should eq("root")
+      allow(resource).to receive(:user).and_return(nil)
+      allow(Facter).to receive(:boxen_user).and_return(nil)
+      allow(Facter).to receive(:value).and_return(nil)
+      expect(factory.call(default_opts)[:user]).to eq('root')
 
-      Facter.stubs(:value).with(:boxen_user).returns('testuser')
-      factory.call(default_opts)[:user].should eq('testuser')
+      allow(Facter).to receive(:value).and_return('testuser')
+      expect(factory.call(default_opts)[:user]).to eq('testuser')
     end
 
     it "should override boxen_user if both exist" do
-      Facter.stubs(:value).with(:boxen_user).returns('testuser')
+      allow(Facter).to receive(:value).with(:boxen_user).and_return('testuser')
 
       opts = default_opts.merge(:user => "otheruser")
-      factory.call(opts)[:user].should eq('otheruser')
+      expect(factory.call(opts)[:user]).to eq('otheruser')
     end
   end
 
   context "extra" do
     it "should accept an array of extra options" do
       resource[:extra] = ['foo', 'bar']
-      resource[:extra].should eq(['foo', 'bar'])
+      expect(resource[:extra]).to eq(['foo', 'bar'])
     end
   end
 end
